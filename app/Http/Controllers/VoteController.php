@@ -50,6 +50,7 @@ class VoteController extends Controller
             }
 
             $this->vote->create($validateRequest);
+            response()->cookie("logged", true, 3600 * 24 * 30);
             return response()->json([
                 "status" => "success",
                 "message" => "Vote telah ditambahkan"
