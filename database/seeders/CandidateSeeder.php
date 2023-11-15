@@ -12,16 +12,35 @@ class CandidateSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 3; $i++) {
-            $data[] = [
-                'visi' => "To be a Programmer",
-                'misi' => "To be a Programmer and Programmer ", 
-                "image" => "image/jpg",
-                "paslon" => "Raka Gribran", 
-                'created_at' => now(),
-                'updated_at' => now() 
-            ];
-        }
-        \App\Models\Candidate::insert($data);
+        $paslon1 = [
+            'visi' => "To be a Programmer",
+            'misi' => "To be a Programmer and Programmer ", 
+            "image" => "image/jpg",
+            "paslon" => "Anies Baswedan | Muhaimin Iskandar",
+            'total_vote' => 1200,
+            'created_at' => now(),
+            'updated_at' => now() 
+        ];
+        $paslon2 = [
+            'visi' => "To be a Programmer",
+            'misi' => "To be a Programmer and Programmer ", 
+            "image" => "image/jpg",
+            "paslon" => "Prabowo Subianto | Gibran Rakabuming Raka", 
+            'total_vote' => 1230,
+            'created_at' => now(),
+            'updated_at' => now() 
+        ];
+        $paslon3 = [
+            'visi' => "To be a Programmer",
+            'misi' => "To be a Programmer and Programmer ", 
+            "image" => "image/jpg",
+            "paslon" => "Ganjar Pranowo | Mahfud MD", 
+            'total_vote' => 2000,
+            'created_at' => now(),
+            'updated_at' => now() 
+        ];
+        \App\Models\Candidate::insert($paslon1);
+        \App\Models\Candidate::insert($paslon2);
+        \App\Models\Candidate::insert($paslon3);
     }
 }

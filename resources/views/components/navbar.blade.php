@@ -10,24 +10,5 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
             </svg>
         </button>
-        <div class="z-50 hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul class="mt-4 flex flex-col space-x-reverse rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0">
-                <li>
-                    <a href="#" class="block rounded bg-blue-700 px-3 py-2 text-white md:bg-transparent md:p-0 md:text-blue-700" aria-current="page">Home</a>
-                </li>
-                <li>
-                    <a href="#" class="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent">About</a>
-                </li>
-                <li>
-                    <a href="#" class="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent">Services</a>
-                </li>
-                <li>
-                    <a href="#" class="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent">Pricing</a>
-                </li>
-                <li>
-                    <a href="#" class="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent">Contact</a>
-                </li>
-            </ul>
-        </div>
     </div>
 </nav>

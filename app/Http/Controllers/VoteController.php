@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidate;
 use App\Models\Vote;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
@@ -11,9 +12,11 @@ class VoteController extends Controller
 {
 
     private Vote $vote;
+    private Candidate $candidate;
 
-    public function __construct(Vote $vote){
+    public function __construct(Vote $vote, Candidate $candidate){
         $this->vote = $vote;
+        $this->candidate = $candidate;
     }
     /**
      * Display a listing of the resource.
@@ -57,11 +60,14 @@ class VoteController extends Controller
                 "candidate_id" => $validateRequest["candidate_id"],
             ];
 
+            $candidate = Candidate::find($validateRequest["candidate_id"]);
+            $candidate->increment('total_vote');
+
 
             $this->vote->create($data);
             $response = response()->json([
                 "status" => "success",
-                "message" => "Vote telah ditambahkan"
+                "message" => "Vote telah ditambahkan",
             ]);
 
             $response->withCookie(cookie()->forever('logged', true));

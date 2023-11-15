@@ -13,7 +13,7 @@
 
 <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-16 sm:grid-cols-2 lg:grid-cols-3">
     @foreach ($candidates as $candidate)
-        <x-card  candidateId="{{ $candidate->id }}" />
+        <x-card  candidateId="{{ $candidate->id }}" id="{{ $candidate->id }}" paslon="{{ $candidate->paslon }}" />
     @endforeach
 </div>
 
@@ -41,28 +41,12 @@
     let totalVote;
     const namaPaslon = [];
     const suara = [];
-    // fetch data using ajax
     candidates.forEach((candidate) => {
-        $.ajax({
-            url: `/candidate/${candidate.id}`,
-            type: 'GET',
-            success: function(response) {
-                suara.push(response.data);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    });
-    // when all data is fetched and pushed to paslon, console.log the paslon
-    $(document).ajaxStop(function() {
-        totalVote = suara.reduce((a, b) => a + b, 0);
-        totalVoteElement.innerHTML = totalVote;
-        candidates.forEach((candidate) => {
-            namaPaslon.push(candidate.paslon);
-        });
-        console.log(suara);
-        const data = {
+        namaPaslon.push(candidate.paslon);
+        suara.push(candidate.total_vote);
+    })
+    totalVoteElement.innerHTML = suara.reduce((a, b) => a + b, 0);
+    const data = {
             labels: namaPaslon,
             datasets: [{
                 label: 'Jumlah Suara',
@@ -83,8 +67,6 @@
             pieChart,
             config
         );
-        // line chart
-    });
 </script>
 
 @endsection
