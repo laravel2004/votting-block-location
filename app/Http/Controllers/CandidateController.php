@@ -52,24 +52,7 @@ class CandidateController extends Controller
      */
     public function show(string $id)
     {
-        try {
-            $sumVote = 0;
-            // get candidate data from
-            $vote = $this->vote->where('candidate_id', $id)->get();
-            foreach ($vote as $item) {
-                $sumVote += 1;
-            }
-
-            return response()->json([
-                "status" => "success",
-                "data" => $sumVote,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                "status" => "error",
-                "message" => $e->getMessage()
-            ]);
-        }
+       //
     }
 
     /**
