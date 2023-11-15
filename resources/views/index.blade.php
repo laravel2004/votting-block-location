@@ -65,4 +65,47 @@
             config
         );
     </script>
+
+    <script>
+        function handleVote(id) {
+            $.ajax({
+                url: '{{ route('vote.store') }}',
+                type: 'POST',
+                data: {
+                    candidate_id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sukses Memilih',
+                            text: response.message,
+                            showConfirmButton: true,
+                            timer: 3000,
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Memilih',
+                            text: response.message,
+                            showConfirmButton: true,
+                        })
+                    }
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Memilih',
+                        text: error.message,
+                        showConfirmButton: false,
+                    })
+                },
+            });
+        }
+    </script>
 @endpush
