@@ -48,7 +48,7 @@ class CandidateController extends Controller {
     public function show(string $id) {
         try{
             $sumVote = 0;
-            $vote = $this->vote->find->where('candidate_id', $id);
+            $vote = $this->vote->where('candidate_id', $id)->get();
             foreach ($vote as $item) {
                 $sumVote += 1;
             }
