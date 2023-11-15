@@ -25,7 +25,6 @@ class CandidateController extends Controller
         try {
             $candidates = $this->candidate->all();
             $votes = $this->vote->all();
-
             return view("index", compact('candidates', 'votes'));
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());

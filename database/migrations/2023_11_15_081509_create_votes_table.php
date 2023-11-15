@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ip')->nullable;
             $table->string('city')->nullable;
             $table->string('country')->nullable;
-            $table->foreignId('candidate_id')->references('id')->on('candidates')->onDelete('cascade');
+            $table->foreignId('candidate_id')->constrained('candidates')->cascadeOnDelete();
             $table->timestamps();
         });
     }
