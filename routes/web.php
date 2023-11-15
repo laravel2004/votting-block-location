@@ -19,7 +19,7 @@ use Stevebauman\Location\Facades\Location;
 */
 
 Route::get('/404', function (Request $request) {
-    return view('welcome');
+    return view('layouts.main');
 });
 
 
