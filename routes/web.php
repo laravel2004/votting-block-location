@@ -36,6 +36,5 @@ Route::middleware([IPChecker::class])->group(function () {
         Route::get('/candidate/{id}', [CandidateController::class, 'detail'])
             ->name('candidates.detail');
     });
-
     Route::resource('/vote', VoteController::class);
 });

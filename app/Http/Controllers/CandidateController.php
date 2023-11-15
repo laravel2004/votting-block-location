@@ -46,23 +46,10 @@ class CandidateController extends Controller {
      * Display the specified resource.
      */
     public function show(string $id) {
-        try {
-            $sumVote = 0;
-            $vote = $this->vote->where('candidate_id', $id)->get();
-            foreach ($vote as $item) {
-                $sumVote += 1;
-            }
+        $candidate = $this->candidate::find($id);
+        $missions = explode('|', $candidate->misi);
 
-            return response()->json([
-                "status" => "success",
-                "data" => $sumVote,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                "status" => "error",
-                "message" => $e->getMessage()
-            ]);
-        }
+        return view("detail", compact('candidate', 'missions'));
     }
 
     /**
@@ -84,12 +71,5 @@ class CandidateController extends Controller {
      */
     public function destroy(string $id) {
         //
-    }
-
-    public function detail(int $id) {
-        $candidate = $this->candidate::find($id);
-        $missions = explode('|', $candidate->misi);
-
-        return view("detail", compact('candidate', 'missions'));
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Vote extends Model
 {
     use HasFactory;
+    protected $fillable = ['ip', 'city', 'country', 'candidate_id'];
 
     public function candidate() {
         return $this->belongsTo(Candidate::class, 'candidate_id', 'id');
