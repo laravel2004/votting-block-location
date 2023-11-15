@@ -19,13 +19,13 @@ use Stevebauman\Location\Facades\Location;
 */
 
 Route::get('/404', function (Request $request) {
-    return view('welcome');
+    return view('layouts.main');
 });
 
-
-Route::get('/location', function (Request $request) {
-    return $request->host();
-})->middleware(IPChecker::class);
-
-Route::resource('/', CandidateController::class)->middleware(IPChecker::class);
-Route::resource('/vote', VoteController::class)->middleware(IPChecker::class);
+Route::middleware([IPChecker::class])->group(function () {
+    Route::get('/location', function (Request $request) {
+        return $request->host();
+    });
+    Route::resource('/', CandidateController::class);
+    Route::resource('/vote', VoteController::class);
+});
