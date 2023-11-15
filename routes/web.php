@@ -26,6 +26,12 @@ Route::middleware([IPChecker::class])->group(function () {
     Route::get('/location', function (Request $request) {
         return $request->host();
     });
-    Route::resource('/', CandidateController::class);
+
+    Route::resource('/', CandidateController::class)->only(['index']);
+
+    Route::prefix('/')->group(function () {
+        Route::resource('/candidate', CandidateController::class)->except(['index']);
+    });
+
     Route::resource('/vote', VoteController::class);
 });

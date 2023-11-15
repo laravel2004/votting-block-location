@@ -17,52 +17,72 @@
     <x-card />
 </div>
 
-<section>
+<section class="w-full flex flex-col justify-center items-center">
     <div>
-        <canvas id="pie-chart"></canvas>
+        <h1 class="text-3xl font-bold text-center">Hasil Polling: <span id="total-vote"></span></h1>
+    </div>
+    <div class="w-1/2">
+        <canvas class="flex justify-center " id="pie-chart"></canvas>
+    </div>
+    <div class="w-1/2">
+        <canvas class="flex justify-center " id="line-chart"></canvas>
     </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
-    // get candidate data from controller
     <?php $candidates = json_encode($candidates); ?>
-    const candidates = <?php echo $candidates; ?>;
-    console.log(candidates[0].total_vote);
-    // select pie-chart element
     const pieChart = document.getElementById('pie-chart');
-    const pieChartData = {
-        labels: ['iza - nandha', ],
-        datasets: [{
-            label: 'Jumlah Suara',
-            data: [candidates[0].total_vote],
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 99, 132, 0.2)'
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 99, 132, 1)'
-            ],
-            borderWidth: 1
-        }]
-    };
-    // create pie chart
-    new Chart(pieChart, {
-        type: 'pie',
-        data: pieChartData,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart.js Pie Chart'
-                }
+    const lineChart = document.getElementById('line-chart');
+    const totalVoteElement = document.getElementById('total-vote');
+    const candidates = <?php echo $candidates; ?>;
+    let totalVote;
+    const namaPaslon = [];
+    const suara = [];
+    // fetch data using ajax
+    candidates.forEach((candidate) => {
+        $.ajax({
+            url: `/candidate/${candidate.id}`,
+            type: 'GET',
+            success: function(response) {
+                suara.push(response.data);
+            },
+            error: function(error) {
+                console.log(error);
             }
-        },
+        });
+    });
+    // when all data is fetched and pushed to paslon, console.log the paslon
+    $(document).ajaxStop(function() {
+        totalVote = suara.reduce((a, b) => a + b, 0);
+        totalVoteElement.innerHTML = totalVote;
+        candidates.forEach((candidate) => {
+            namaPaslon.push(candidate.paslon);
+        });
+        console.log(suara);
+        const data = {
+            labels: namaPaslon,
+            datasets: [{
+                label: 'Jumlah Suara',
+                data: suara,
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const config = {
+            type: 'pie',
+            data: data,
+        };
+        let myChart = new Chart(
+            pieChart,
+            config
+        );
+        // line chart
     });
 </script>
 
