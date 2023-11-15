@@ -42,6 +42,13 @@ class VoteController extends Controller
                 "candidate_id" => "required",
             ]);
 
+            if($request->cookie("logged")){
+                return  response()->json([
+                    "status" => "error",
+                    "message" => "Anda sudah melakukan voting",
+                ]);
+            }
+
             $this->vote->create($validateRequest);
             return response()->json([
                 "status" => "success",
