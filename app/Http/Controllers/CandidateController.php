@@ -22,13 +22,12 @@ class CandidateController extends Controller
      */
     public function index(Request $request)
     {
-        try{
+        try {
             return view("index", [
                 "candidate" => $this->candidate->all(),
                 "vote" => $this->vote->all(),
             ]);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
     }
