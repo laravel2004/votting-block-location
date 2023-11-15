@@ -11,22 +11,22 @@ class CandidateController extends Controller
     private Candidate $candidate;
     private  Vote $vote;
 
-
     public function __construct(Candidate $candidate, Vote $vote)
     {
         $this->candidate = $candidate;
         $this->vote = $vote;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         try {
-            return view("index", [
-                "candidate" => $this->candidate->all(),
-                "vote" => $this->vote->all(),
-            ]);
+            $candidates = $this->candidate->all();
+            $votes = $this->vote->all();
+
+            return view("index", compact('candidates', 'votes'));
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
