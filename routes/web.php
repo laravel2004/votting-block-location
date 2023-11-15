@@ -26,11 +26,16 @@ Route::middleware([IPChecker::class])->group(function () {
     Route::get('/location', function (Request $request) {
         return $request->host();
     });
-    Route::resource('/', CandidateController::class)->only('index')->names([
+
+    Route::resource('/', CandidateController::class)->only(['index'])->names([
         'index' => 'candidates.index'
     ]);
-    Route::resource('/paslon', CandidateController::class)->only('show')->names([
-        'show' => 'candidates.show'
-    ]);
+
+    Route::prefix('/')->group(function () {
+        Route::resource('/candidate', CandidateController::class)->except(['index']);
+        Route::get('/candidate/{id}', [CandidateController::class, 'detail'])
+            ->name('candidates.detail');
+    });
+
     Route::resource('/vote', VoteController::class);
 });

@@ -22,7 +22,6 @@ class CandidateController extends Controller {
         try {
             $candidates = $this->candidate->all();
             $votes = $this->vote->all();
-
             return view("index", compact('candidates', 'votes'));
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
@@ -46,11 +45,24 @@ class CandidateController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(int $id) {
-        $candidate = $this->candidate::find($id);
-        $missions = explode('|', $candidate->misi);
+    public function show(string $id) {
+        try {
+            $sumVote = 0;
+            $vote = $this->vote->where('candidate_id', $id)->get();
+            foreach ($vote as $item) {
+                $sumVote += 1;
+            }
 
-        return view("detail", compact('candidate', 'missions'));
+            return response()->json([
+                "status" => "success",
+                "data" => $sumVote,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "message" => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -72,5 +84,12 @@ class CandidateController extends Controller {
      */
     public function destroy(string $id) {
         //
+    }
+
+    public function detail(int $id) {
+        $candidate = $this->candidate::find($id);
+        $missions = explode('|', $candidate->misi);
+
+        return view("detail", compact('candidate', 'missions'));
     }
 }
