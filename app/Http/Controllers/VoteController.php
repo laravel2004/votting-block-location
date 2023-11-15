@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Vote;
 use Illuminate\Http\Request;
+use Stevebauman\Location\Facades\Location;
+use Illuminate\Http\Response;
 
 class VoteController extends Controller
 {
@@ -36,11 +38,10 @@ class VoteController extends Controller
     {
         try {
             $validateRequest = $request->validate([
-                "ip" => "required",
-                "city" => "required",
-                "country" => "required",
                 "candidate_id" => "required",
             ]);
+
+            $infoIP = Location::get('182.1.80.130');
 
             if($request->cookie("logged")){
                 return  response()->json([
@@ -49,12 +50,23 @@ class VoteController extends Controller
                 ]);
             }
 
-            $this->vote->create($validateRequest);
-            response()->cookie("logged", true, 3600 * 24 * 30);
-            return response()->json([
+            $data = [
+                "ip" => $request->ip(),
+                "city" => $infoIP->cityName,
+                "country" => $infoIP->countryName,
+                "candidate_id" => $validateRequest["candidate_id"],
+            ];
+
+
+            $this->vote->create($data);
+            $response = response()->json([
                 "status" => "success",
                 "message" => "Vote telah ditambahkan"
             ]);
+
+            $response->withCookie(cookie()->forever('logged', true));
+
+            return $response;
 
         }
         catch (\Exception $e) {

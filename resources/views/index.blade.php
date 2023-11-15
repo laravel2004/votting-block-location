@@ -12,9 +12,9 @@
 </section>
 
 <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-16 sm:grid-cols-2 lg:grid-cols-3">
-    <x-card />
-    <x-card />
-    <x-card />
+    @foreach ($candidates as $candidate)
+        <x-card  candidateId="{{ $candidate->id }}" />
+    @endforeach
 </div>
 
 <section class="w-full flex flex-col justify-center items-center">
@@ -31,6 +31,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     <?php $candidates = json_encode($candidates); ?>
     const pieChart = document.getElementById('pie-chart');

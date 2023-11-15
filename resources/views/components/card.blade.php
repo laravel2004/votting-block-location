@@ -15,9 +15,54 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                 </svg>
             </a>
-            <a href="#" class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-900">
+            <button onclick="handleVote({{$candidateId}})" class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-900">
                 Pilih Calon Nomor Urut 1
-            </a>
+            </button>
         </div>
     </div>
 </div>
+
+<script>
+    function handleVote(id) {
+        $.ajax({
+            url: '{{ route('vote.store') }}',
+            type: 'POST',
+            data: {
+                candidate_id: id,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                console.log(response)
+                if (response.status == 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses Memilih',
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    window.location.reload();
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memilih',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload();
+            },
+            error : function(error) {
+                console.log(error.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memilih',
+                    text: error.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                window.location.reload();
+            },
+        });
+    }
+</script>
