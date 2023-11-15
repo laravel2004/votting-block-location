@@ -32,6 +32,5 @@ Route::middleware([IPChecker::class])->group(function () {
     Route::prefix('/')->group(function () {
         Route::resource('/candidate', CandidateController::class)->except(['index']);
     });
-
     Route::resource('/vote', VoteController::class);
 });
