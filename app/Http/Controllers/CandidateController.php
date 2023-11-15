@@ -23,6 +23,7 @@ class CandidateController extends Controller
     public function index(Request $request)
     {
         try{
+            dd($this->vote->with("candidate")->get());
             return view("index", [
                 "candidate" => $this->candidate->all(),
                 "vote" => $this->vote->all(),
