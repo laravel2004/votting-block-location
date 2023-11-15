@@ -9,7 +9,7 @@
         <div class="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-b from-blue-50 to-transparent"></div>
     </section>
 
-    <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-16 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-24 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($candidates as $candidate)
             <x-card id="{{ $candidate->id }}" paslonName="{{ $candidate->paslon }}" image="{{ $candidate->image }}" />
         @endforeach
@@ -17,7 +17,7 @@
 
     <section class="flex w-full flex-col items-center justify-center">
         <div>
-            <h1 class="text-center text-3xl font-bold">Hasil Polling: <span id="total-vote"></span></h1>
+            <h1 class="mb-8 text-center text-3xl font-bold">Hasil Polling: {{ $votes->count() }} Suara</span></h1>
         </div>
         <div class="w-1/2">
             <canvas class="flex justify-center" id="pie-chart"></canvas>
@@ -33,7 +33,6 @@
         <?php $candidates = json_encode($candidates); ?>
         const pieChart = document.getElementById('pie-chart');
         const lineChart = document.getElementById('line-chart');
-        const totalVoteElement = document.getElementById('total-vote');
         const candidates = <?php echo $candidates; ?>;
         let totalVote;
         const namaPaslon = [];
@@ -42,7 +41,6 @@
             namaPaslon.push(candidate.paslon);
             suara.push(candidate.total_vote);
         })
-        totalVoteElement.innerHTML = suara.reduce((a, b) => a + b, 0);
         const data = {
             labels: namaPaslon,
             datasets: [{
