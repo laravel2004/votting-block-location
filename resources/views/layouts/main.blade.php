@@ -14,12 +14,12 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/surabaya_icon.png') }}">
     @vite('resources/css/app.css')
     @stack('style')
-    <title>@yield('title')</title>
+    <title>Polling Surabaya</title>
 </head>
 
 <body>
     <x-navbar />
-    <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between px-4">
+    <div class="mx-auto max-w-screen-xl px-4">
         @yield('content')
     </div>
     <x-footer />

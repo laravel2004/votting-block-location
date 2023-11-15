@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CandidateController extends Controller {
     private Candidate $candidate;
-    private  Vote $vote;
+    private Vote $vote;
 
     public function __construct(Candidate $candidate, Vote $vote) {
         $this->candidate = $candidate;
@@ -46,8 +46,11 @@ class CandidateController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {
-        //
+    public function show(int $id) {
+        $candidate = $this->candidate::find($id);
+        $missions = explode('|', $candidate->misi);
+
+        return view("detail", compact('candidate', 'missions'));
     }
 
     /**

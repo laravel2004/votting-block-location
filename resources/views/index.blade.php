@@ -1,7 +1,5 @@
 @extends('layouts.main')
 
-@section('title', 'Polling Surabaya')
-
 @section('content')
     <section class="bg-white bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')]">
         <div class="relative z-10 mx-auto max-w-screen-xl px-4 pb-16 pt-8 text-center lg:pb-28 lg:pt-20">
@@ -12,9 +10,8 @@
     </section>
 
     <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-16 sm:grid-cols-2 lg:grid-cols-3">
-        <x-card />
-        <x-card />
-        <x-card />
+        @foreach ($candidates as $index => $candidate)
+            <x-card id="{{ $index + 1 }}" paslonName="{{ $candidate->paslon }}" image="{{ $candidate->image }}" />
+        @endforeach
     </div>
-
 @endsection
