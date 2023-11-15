@@ -18,9 +18,9 @@ class IPChecker
     {
         $possition = Location::get('182.1.80.130');
         if($possition->regionName == 'East Java') {
-            dd($possition);
+            // dd($possition);
             return $next($request);
         }
-        return redirect('/');
+        return redirect('/404');
     }
 }

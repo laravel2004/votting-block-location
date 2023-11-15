@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\VoteController;
 use App\Http\Middleware\IPChecker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,10 +18,14 @@ use Stevebauman\Location\Facades\Location;
 |
 */
 
-Route::get('/', function (Request $request) {
+Route::get('/404', function (Request $request) {
     return view('welcome');
 });
+
 
 Route::get('/location', function (Request $request) {
     return $request->host();
 })->middleware(IPChecker::class);
+
+Route::resource('/', CandidateController::class)->middleware(IPChecker::class);
+Route::resource('/vote', VoteController::class)->middleware(IPChecker::class);
