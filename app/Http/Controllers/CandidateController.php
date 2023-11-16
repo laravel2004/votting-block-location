@@ -24,12 +24,10 @@ class CandidateController extends Controller {
             $position = Location::get('140.0.92.74');
             $candidates = $this->candidate->all();
             $votes = $this->vote->all();
-            if($position->cityName == 'Surabaya') {
-                $isVote = true;
-                return view("index", compact('candidates', 'votes', 'isVote'));
+            if ($position->cityName == 'Surabaya') {
+                return view("index", compact('candidates', 'votes'));
             }
-            $isVote = false;
-            return view("index", compact('candidates', 'votes', 'isVote'));
+            return view("index", compact('candidates', 'votes'));
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
