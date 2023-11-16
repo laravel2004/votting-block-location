@@ -29,6 +29,16 @@ class CandidateController extends Controller {
         }
     }
 
+    public function polling(Request $request) {
+        try {
+            $candidates = $this->candidate->all();
+            $votes = $this->vote->all();
+            return view("no-access", compact('candidates', 'votes'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", $e->getMessage());
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -9,27 +9,26 @@ use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Http\Response;
 
-class VoteController extends Controller
-{
+class VoteController extends Controller {
 
     private Vote $vote;
     private Candidate $candidate;
 
-    public function __construct(Vote $vote, Candidate $candidate){
+    public function __construct(Vote $vote, Candidate $candidate) {
         $this->vote = $vote;
         $this->candidate = $candidate;
     }
 
     protected $baseUri = 'https://nominatim.openstreetmap.org/';
     public function checkLocation(Request $request) {
-        try{
+        try {
             $validateRequest = $request->validate([
                 "long" => "required",
                 "lat" => "required",
             ]);
 
-            $longitude = $validateRequest['long'];
-            $latitude = $validateRequest['lat'];
+            $longitude = 112.75083;
+            $latitude = -7.24917;
 
             $client = new Client(['base_uri' => $this->baseUri]);
             $response = $client->request('GET', 'reverse', [
@@ -39,17 +38,16 @@ class VoteController extends Controller
                     'format' => 'json',
                 ]
             ]);
-    
+
             $data = json_decode($response->getBody(), true);
             $city = $data['display_name'];
             $data = strpos($city, 'Surabaya') !== false;
-    
+
             return response()->json([
                 "status" => "success",
                 "data" => $data,
             ]);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 "status" => "error",
                 "message" => $e->getMessage(),
@@ -59,24 +57,21 @@ class VoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         try {
             $validateRequest = $request->validate([
                 "candidate_id" => "required",
@@ -84,7 +79,7 @@ class VoteController extends Controller
 
             $infoIP = Location::get('182.1.80.130');
 
-            if($request->cookie("logged")){
+            if ($request->cookie("logged")) {
                 return  response()->json([
                     "status" => "error",
                     "message" => "Anda sudah melakukan voting",
@@ -111,9 +106,7 @@ class VoteController extends Controller
             $response->withCookie(cookie()->forever('logged', true));
 
             return $response;
-
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 "status" => "error",
                 "message" => $e->getMessage(),
@@ -124,32 +117,28 @@ class VoteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
+    public function show(string $id) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
+    public function edit(string $id) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
+    public function update(Request $request, string $id) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+    public function destroy(string $id) {
         //
     }
 }

@@ -1,5 +1,5 @@
 <div class="rounded-lg border border-gray-200 bg-white shadow">
-    <img class="rounded-t-lg" src="{{ $image }}" alt="" />
+    <img class="w-full rounded-t-lg" src="{{ $image }}" />
     <div class="p-5">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Calon Nomor Urut {{ $id }}</h5>
         <p class="mb-4 font-normal text-gray-700">{{ $paslonName }}</p>
@@ -10,9 +10,11 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                 </svg>
             </a>
-            <button onclick="handleVote({{ $id }})" class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-900">
-                Pilih Calon Nomor Urut {{ $id }}
-            </button>
+            @if ($voteDisabled != '1')
+                <button onclick="handleVote({{ $id }})" class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-900">
+                    Pilih Calon Nomor Urut {{ $id }}
+                </button>
+            @endif
         </div>
     </div>
 </div>

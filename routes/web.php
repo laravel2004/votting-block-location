@@ -18,9 +18,7 @@ use Stevebauman\Location\Facades\Location;
 |
 */
 
-Route::get('/404', function (Request $request) {
-    return view('layouts.main');
-});
+Route::get('/polling', [CandidateController::class, 'polling']);
 
 Route::get('/location', function (Request $request) {
     return $request->host();
