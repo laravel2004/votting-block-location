@@ -21,12 +21,8 @@ class CandidateController extends Controller {
      */
     public function index(Request $request) {
         try {
-            $position = Location::get('140.0.92.74');
             $candidates = $this->candidate->all();
             $votes = $this->vote->all();
-            if ($position->cityName == 'Surabaya') {
-                return view("index", compact('candidates', 'votes'));
-            }
             return view("index", compact('candidates', 'votes'));
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
