@@ -19,21 +19,22 @@
         <div>
             <h1 class="mb-8 text-center text-3xl font-bold">Hasil Polling: {{ $votes->count() }} Suara</span></h1>
         </div>
-        <div class="w-1/2">
-            <canvas class="flex justify-center" id="pie-chart"></canvas>
-        </div>
-        <div class="w-1/2">
+        <div>
+            <canvas id="pie-chart"></canvas>
             <canvas class="flex justify-center" id="line-chart"></canvas>
         </div>
+        {{-- <div class="w-1/2">
+        </div>
+        <div class="w-1/2">
+        </div> --}}
     </section>
 @endsection
 
 @push('script')
     <script>
-        <?php $candidates = json_encode($candidates); ?>
         const pieChart = document.getElementById('pie-chart');
         const lineChart = document.getElementById('line-chart');
-        const candidates = <?php echo $candidates; ?>;
+        const candidates = {!! json_encode($candidates) !!};
         let totalVote;
         const namaPaslon = [];
         const suara = [];
