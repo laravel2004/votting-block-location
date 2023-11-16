@@ -11,7 +11,7 @@
 
     <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-24 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($candidates as $candidate)
-            <x-card id="{{ $candidate->id }}" isVote="{{ $isVote }}" paslonName="{{ $candidate->paslon }}" image="{{ $candidate->image }}" />
+            <x-card id="{{ $candidate->id }}" paslonName="{{ $candidate->paslon }}" image="{{ $candidate->image }}" />
         @endforeach
     </div>
 
@@ -253,7 +253,7 @@
                             success: function(response) {
                                 console.log(response)
                                 if (!response.data) {
-                                    // window.location.href = "/404";
+                                    window.location.href = "/404";
                                 }
                             },
                             error: function(error) {
