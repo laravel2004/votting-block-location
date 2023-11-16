@@ -27,8 +27,8 @@ class VoteController extends Controller {
                 "lat" => "required",
             ]);
 
-            $longitude = 112.75083;
-            $latitude = -7.24917;
+            $longitude = $validateRequest['long'];
+            $latitude = $validateRequest['lat'];
 
             $client = new Client(['base_uri' => $this->baseUri]);
             $response = $client->request('GET', 'reverse', [
@@ -77,7 +77,7 @@ class VoteController extends Controller {
                 "candidate_id" => "required",
             ]);
 
-            $infoIP = Location::get('182.1.80.130');
+            $infoIP = Location::get($request->ip());
 
             if ($request->cookie("logged")) {
                 return  response()->json([
