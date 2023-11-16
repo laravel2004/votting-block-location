@@ -19,14 +19,9 @@
         <div>
             <h1 class="mb-8 text-center text-3xl font-bold">Hasil Polling: {{ $votes->count() }} Suara</span></h1>
         </div>
-        <div>
+        <div class="flex justify-center w-full sm:w-1/2 xl:w-1/3">
             <canvas id="pie-chart"></canvas>
-            <canvas class="flex justify-center" id="line-chart"></canvas>
         </div>
-        {{-- <div class="w-1/2">
-        </div>
-        <div class="w-1/2">
-        </div> --}}
     </section>
 @endsection
 
@@ -58,6 +53,17 @@
         const config = {
             type: 'pie',
             data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                    }
+                }
+            },
         };
         let myChart = new Chart(
             pieChart,
