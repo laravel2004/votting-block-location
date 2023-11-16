@@ -21,7 +21,7 @@ class CandidateController extends Controller {
      */
     public function index(Request $request) {
         try {
-            $position = Location::get();
+            $position = Location::get('140.0.92.74');
             $candidates = $this->candidate->all();
             $votes = $this->vote->all();
             if($position->cityName == 'Surabaya') {
