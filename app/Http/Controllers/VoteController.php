@@ -29,17 +29,20 @@ class VoteController extends Controller
             $longitude = $validateRequest['long'];
             $latitude = $validateRequest['lat'];
 
-            $longitudeRegex = '/^112\.75\d+$/'; 
-            $latitudeRegex = '/^-7\.2\d+$/';   
+            $longitudeRegex = '/^112\.7\d+$/'; 
+            $latitudeRegex = '/^-7.\d+$/';   
 
             $isLongitudeValid = preg_match($longitudeRegex, $longitude);
             $isLatitudeValid = preg_match($latitudeRegex, $latitude);
 
-            $isWithinRange = $isLongitudeValid && $isLatitudeValid;
+            $isVote = $isLongitudeValid && $isLatitudeValid;
+            $candidates = $this->candidate->all();
+            $vaotes = $this->vote->all();
+            // return view('index', compact('candidates', 'vaotes', 'isVote'));
 
             return response()->json([
                 "status" => "success",
-                "data" => $isWithinRange,
+                "data" => $isVote,
             ]);
         }
         catch(\Exception $e){
