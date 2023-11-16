@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidate;
 use App\Models\Vote;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Http\Response;
@@ -19,6 +20,7 @@ class VoteController extends Controller
         $this->candidate = $candidate;
     }
 
+    protected $baseUri = 'https://nominatim.openstreetmap.org/';
     public function checkLocation(Request $request) {
         try{
             $validateRequest = $request->validate([
@@ -29,20 +31,22 @@ class VoteController extends Controller
             $longitude = $validateRequest['long'];
             $latitude = $validateRequest['lat'];
 
-            $longitudeRegex = '/^112\.7\d+$/'; 
-            $latitudeRegex = '/^-7.\d+$/';   
-
-            $isLongitudeValid = preg_match($longitudeRegex, $longitude);
-            $isLatitudeValid = preg_match($latitudeRegex, $latitude);
-
-            $isVote = $isLongitudeValid && $isLatitudeValid;
-            $candidates = $this->candidate->all();
-            $vaotes = $this->vote->all();
-            // return view('index', compact('candidates', 'vaotes', 'isVote'));
-
+            $client = new Client(['base_uri' => $this->baseUri]);
+            $response = $client->request('GET', 'reverse', [
+                'query' => [
+                    'lat' => $latitude,
+                    'lon' => $longitude,
+                    'format' => 'json',
+                ]
+            ]);
+    
+            $data = json_decode($response->getBody(), true);
+            $city = $data['display_name'];
+            $data = strpos($city, 'Surabaya') !== false;
+    
             return response()->json([
                 "status" => "success",
-                "data" => $isVote,
+                "data" => $data,
             ]);
         }
         catch(\Exception $e){
