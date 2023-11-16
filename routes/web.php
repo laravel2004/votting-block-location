@@ -22,20 +22,20 @@ Route::get('/404', function (Request $request) {
     return view('layouts.main');
 });
 
-Route::middleware([IPChecker::class])->group(function () {
-    Route::get('/location', function (Request $request) {
-        return $request->host();
-    });
-
-    Route::resource('/', CandidateController::class)->only(['index'])->names([
-        'index' => 'candidates.index'
-    ]);
-
-    Route::prefix('/')->group(function () {
-        Route::resource('/candidate', CandidateController::class)->except(['index']);
-        Route::get('/candidate/{id}', [CandidateController::class, 'detail'])
-            ->name('candidates.detail');
-        Route::post('vote/location', [VoteController::class, 'checkLocation'])->name('vote.location');
-    });
-    Route::resource('/vote', VoteController::class);
+Route::get('/location', function (Request $request) {
+    return $request->host();
 });
+
+Route::resource('/', CandidateController::class)->only(['index'])->names([
+    'index' => 'candidates.index'
+]);
+
+Route::prefix('/')->group(function () {
+    Route::resource('/candidate', CandidateController::class)->except(['index']);
+    Route::get('/candidate/{id}', [CandidateController::class, 'detail'])
+        ->name('candidates.detail');
+    Route::post('vote/location', [VoteController::class, 'checkLocation'])->name('vote.location');
+});
+Route::resource('/vote', VoteController::class);
+// Route::middleware([IPChecker::class])->group(function () {
+// });

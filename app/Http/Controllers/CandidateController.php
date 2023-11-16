@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Candidate;
 use App\Models\Vote;
 use Illuminate\Http\Request;
+use Stevebauman\Location\Facades\Location;
 
 class CandidateController extends Controller {
     private Candidate $candidate;
@@ -20,9 +21,15 @@ class CandidateController extends Controller {
      */
     public function index(Request $request) {
         try {
+            $position = Location::get();
             $candidates = $this->candidate->all();
             $votes = $this->vote->all();
-            return view("index", compact('candidates', 'votes'));
+            if($position->cityName == 'Surabaya') {
+                $isVote = true;
+                return view("index", compact('candidates', 'votes', 'isVote'));
+            }
+            $isVote = false;
+            return view("index", compact('candidates', 'votes', 'isVote'));
         } catch (\Exception $e) {
             return redirect()->back()->with("error", $e->getMessage());
         }
