@@ -18,6 +18,37 @@ class VoteController extends Controller
         $this->vote = $vote;
         $this->candidate = $candidate;
     }
+
+    public function checkLocation(Request $request) {
+        try{
+            $validateRequest = $request->validate([
+                "long" => "required",
+                "lat" => "required",
+            ]);
+
+            $longitude = $validateRequest['long'];
+            $latitude = $validateRequest['lat'];
+
+            $longitudeRegex = '/^112\.75\d+$/'; 
+            $latitudeRegex = '/^-7\.2\d+$/';   
+
+            $isLongitudeValid = preg_match($longitudeRegex, $longitude);
+            $isLatitudeValid = preg_match($latitudeRegex, $latitude);
+
+            $isWithinRange = $isLongitudeValid && $isLatitudeValid;
+
+            return response()->json([
+                "status" => "success",
+                "data" => $isWithinRange,
+            ]);
+        }
+        catch(\Exception $e){
+            return response()->json([
+                "status" => "error",
+                "message" => $e->getMessage(),
+            ]);
+        }
+    }
     /**
      * Display a listing of the resource.
      */

@@ -106,5 +106,48 @@
                 },
             });
         }
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const lat = position.coords.latitude;
+                    const long = position.coords.longitude;
+                    if (lat && long) {
+                        // Jika berhasil mendapatkan lokasi, lakukan sesuatu
+                        console.log(lat, long);
+                        $.ajax({
+                            url: '{{ route('vote.location') }}',
+                            type: 'POST',
+                            data: {
+                                lat: lat,
+                                long: long,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (!response.data) {
+                                    window.location.href = "/404";
+                                }
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            },
+
+
+                        })
+                    } else {
+                        // Tidak bisa mendapatkan koordinat
+                        window.location.href = "/404";
+                    }
+                },
+                function (error) {
+                    console.error("Error getting geolocation:", error);
+                    // Tangani kesalahan ketika gagal mendapatkan lokasi
+                    window.location.href = "/404";
+                }
+            );
+        } else {
+            // Geolocation tidak didukung
+            console.log("Geolocation not supported");
+        }
     </script>
 @endpush

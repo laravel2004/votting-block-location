@@ -35,6 +35,7 @@ Route::middleware([IPChecker::class])->group(function () {
         Route::resource('/candidate', CandidateController::class)->except(['index']);
         Route::get('/candidate/{id}', [CandidateController::class, 'detail'])
             ->name('candidates.detail');
+        Route::post('vote/location', [VoteController::class, 'checkLocation'])->name('vote.location');
     });
     Route::resource('/vote', VoteController::class);
 });

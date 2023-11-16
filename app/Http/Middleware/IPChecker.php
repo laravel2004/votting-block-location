@@ -16,8 +16,8 @@ class IPChecker
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $possition = Location::get('182.1.80.130');
-        if ($possition->regionName == 'East Java') {
+        $possition = Location::get('140.0.92.74');
+        if ($possition->cityName == 'Surabaya') {
             // dd($possition);
             return $next($request);
         }
