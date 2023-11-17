@@ -11,7 +11,7 @@
 
     <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-24 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($candidates as $candidate)
-            <x-card id="{{ $candidate->id }}" voteDisabled="0" paslonName="{{ $candidate->paslon }}" image="{{ asset('images/' . $candidate->image) }}" />
+            <x-card id="{{ $candidate->id }}" voteDisabled="1" paslonName="{{ $candidate->paslon }}" image="{{ asset('images/' . $candidate->image) }}" />
         @endforeach
     </div>
 

@@ -3,7 +3,7 @@
 @section('content')
     <div class="mx-auto max-w-screen-lg pb-16 pt-8">
         <div class="flex flex-col justify-center">
-            <img src="{{ $candidate->image }}" class="mb-8 w-full self-center rounded-lg shadow-md sm:w-96" />
+            <img src="{{ asset('images/' . $candidate->image) }}" class="mb-8 w-full self-center rounded-lg shadow-md sm:w-96" />
             <h1 class="text-center text-3xl font-extrabold text-gray-900 md:text-4xl">{{ $candidate->paslon }}</h1>
         </div>
     </div>
