@@ -2,9 +2,9 @@
     <div>
         <h1 class="mb-8 text-center text-3xl font-bold">Hasil Polling: {{ $voteCount }} Suara</span></h1>
     </div>
-    <div class="flex w-full flex-col items-center justify-center gap-8 sm:w-1/2 md:flex-row xl:w-1/3">
-        <canvas id="pie-chart" width="400" height="400"></canvas>
-        <canvas id="line-chart" width="400" height="400"></canvas>
+    <div class="relative flex w-full flex-col items-center justify-center gap-x-20 gap-y-20 px-8 lg:flex-row">
+        <canvas id="pie-chart"></canvas>
+        <canvas id="line-chart"></canvas>
     </div>
 </section>
 
@@ -61,7 +61,7 @@
                     }
                 },
                 animation: {
-                    duration: 2000,
+                    duration: 1000,
                     easing: 'easeInOutQuart',
                 },
             },
@@ -78,7 +78,7 @@
                     }
                 },
                 animation: {
-                    duration: 2000,
+                    duration: 1000,
                     easing: 'easeInOutQuart',
                 },
                 plugins: {
@@ -108,5 +108,26 @@
             pieChart,
             config
         );
+
+        const smallScreen = window.matchMedia('(max-width: 425px)');
+        const largeScreen = window.matchMedia('(min-width: 425px)');
+
+        function handleResize() {
+            if (smallScreen.matches) {
+                line.resize(300, 300);
+                myChart.resize(300, 300);
+            }
+
+            if (largeScreen.matches) {
+                line.resize(400, 400);
+                myChart.resize(400, 400);
+            }
+        }
+
+        // Panggil handleResize saat halaman dimuat
+        handleResize();
+
+        // Tambahkan event listener untuk mendeteksi perubahan ukuran layar
+        window.addEventListener('resize', handleResize);
     </script>
 @endpush

@@ -10,24 +10,24 @@
             </div>
             <h1 class="text-center text-3xl font-bold">Waktu hitung mundur hingga pemilu 2024</h1>
         </div>
-        <div class="flex w-full items-center justify-center text-center text-6xl">
-            <div class="mx-1 w-24 rounded-lg p-2">
-                <div class="leading-none" id="days">00</div>
+        <div class="flex w-full items-center justify-center gap-x-8 text-center">
+            <div>
+                <div class="text-4xl leading-none sm:text-6xl" id="days">00</div>
                 <div class="mt-3 text-sm uppercase leading-none">Hari</div>
             </div>
-            <div class="mx-1 w-24 rounded-lg p-2">
-                <div class="leading-none" id="hours">00</div>
+            <div>
+                <div class="text-4xl leading-none sm:text-6xl" id="hours">00</div>
                 <div class="mt-3 text-sm uppercase leading-none">Jam</div>
             </div>
-            <div class="mx-1 w-24 rounded-lg p-2">
-                <div class="leading-none" id="minutes">00</div>
+            <div>
+                <div class="text-4xl leading-none sm:text-6xl" id="minutes">00</div>
                 <div class="mt-3 text-sm uppercase leading-none">Menit</div>
             </div>
-            <div class="mx-1 w-24 rounded-lg p-2">
-                <div class="leading-none" id="seconds">00</div>
+            <div>
+                <div class="text-4xl leading-none sm:text-6xl" id="seconds">00</div>
                 <div class="mt-3 text-sm uppercase leading-none">Detik</div>
             </div>
-            <div id="end"></div>
+            {{-- <div id="end"></div> --}}
         </div>
     </div>
 </section>
