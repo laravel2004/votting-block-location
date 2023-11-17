@@ -10,16 +10,13 @@ use Stevebauman\Location\Facades\Location;
 use Illuminate\Http\Response;
 
 class VoteController extends Controller {
-
     private Vote $vote;
-    private Candidate $candidate;
+    protected $baseUri = 'https://nominatim.openstreetmap.org/';
 
-    public function __construct(Vote $vote, Candidate $candidate) {
+    public function __construct(Vote $vote) {
         $this->vote = $vote;
-        $this->candidate = $candidate;
     }
 
-    protected $baseUri = 'https://nominatim.openstreetmap.org/';
     public function checkLocation(Request $request) {
         try {
             $validateRequest = $request->validate([
@@ -27,8 +24,8 @@ class VoteController extends Controller {
                 "lat" => "required",
             ]);
 
-            $longitude = $validateRequest['long'];
-            $latitude = $validateRequest['lat'];
+            $longitude = 112.75083;
+            $latitude = -7.24917;
 
             $client = new Client(['base_uri' => $this->baseUri]);
             $response = $client->request('GET', 'reverse', [
@@ -54,6 +51,25 @@ class VoteController extends Controller {
             ]);
         }
     }
+
+    public function checkIP(Request $request) {
+        try {
+            $infoIP = Location::get($request->ip());
+            $data = $infoIP->cityName;
+            $data = strpos($data, 'Surabaya') !== false;
+
+            return response()->json([
+                "status" => "success",
+                "data" => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => "error",
+                "message" => $e->getMessage(),
+            ]);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */

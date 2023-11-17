@@ -11,7 +11,7 @@
 
     <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-24 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($candidates as $candidate)
-            <x-card id="{{ $candidate->id }}" voteDisabled="0" paslonName="{{ $candidate->paslon }}" image="{{ asset('images/' . $candidate->image) }}" />
+            <x-card id="{{ $candidate->id }}" paslonName="{{ $candidate->paslon }}" image="{{ asset('images/' . $candidate->image) }}" />
         @endforeach
     </div>
 
@@ -22,57 +22,132 @@
 
 @push('script')
     <script>
-        function handleVote(id) {
+        getLocationPermission();
+
+        function getLocationPermission() {
             if ("geolocation" in navigator) {
                 navigator.permissions.query({
                     name: 'geolocation'
                 }).then(function(permissionStatus) {
-                    if (permissionStatus.state == 'granted') {
-                        $.ajax({
-                            url: '{{ route('vote.store') }}',
-                            type: 'POST',
-                            data: {
-                                candidate_id: id,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.status == 'success') {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Sukses Memilih',
-                                        text: response.message,
-                                        showConfirmButton: true,
-                                        timer: 3000,
-                                    }).then(function(result) {
-                                        if (result.isConfirmed) {
-                                            window.location.reload();
-                                        }
-                                    })
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Gagal Memilih',
-                                        text: response.message,
-                                        showConfirmButton: true,
-                                    })
-                                }
-                            },
-                            error: function(error) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal Memilih',
-                                    text: error.message,
-                                    showConfirmButton: false,
-                                })
-                            },
+                    if (permissionStatus.state === 'granted') {
+                        localStorage.setItem('locationPermission', 'granted');
+                    } else if (permissionStatus.state === 'prompt') {
+                        navigator.geolocation.getCurrentPosition(function() {
+                            localStorage.setItem('locationPermission', 'granted');
+                        }, function(error) {
+                            showLocationPermissionAlert();
+                            localStorage.setItem('locationPermission', 'denied');
                         });
                     } else {
                         showLocationPermissionAlert();
+                        localStorage.setItem('locationPermission', 'denied');
                     }
                 });
             } else {
                 showLocationNotSupportedAlert();
+                localStorage.setItem('locationPermission', 'denied');
             }
+        }
+
+        function handleVote(id) {
+            const locationPermission = localStorage.getItem('locationPermission');
+            if (locationPermission === 'granted') {
+                getCurrentLocationAndVote(id);
+            } else {
+                getCurrentLocationByIp(id);
+            }
+        }
+
+        function getCurrentLocationByIp(id) {
+            $.ajax({
+                url: '{{ route('vote.ip') }}',
+                type: 'GET',
+                success: function(response) {
+                    if (!response.data) {
+                        showLocationNotAllowedAlert();
+                    } else {
+                        performVote(id);
+                    }
+                },
+                error: function(error) {
+                    alert(error)
+                },
+            })
+        }
+
+        function getCurrentLocationAndVote(id) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const long = position.coords.longitude;
+                    if (lat && long) {
+                        $.ajax({
+                            url: '{{ route('vote.location') }}',
+                            type: 'POST',
+                            data: {
+                                lat: lat,
+                                long: long,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (!response.data) {
+                                    showLocationNotAllowedAlert();
+                                } else {
+                                    performVote(id);
+                                }
+                            },
+                            error: function(error) {
+                                alert(error)
+                            },
+                        });
+                    }
+                },
+                function(error) {
+                    console.error("Error getting geolocation:", error);
+                    showLocationNotSupportedAlert();
+                }
+            );
+        }
+
+        function performVote(id) {
+            $.ajax({
+                url: '{{ route('vote.store') }}',
+                type: 'POST',
+                data: {
+                    candidate_id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sukses Memilih',
+                            text: response.message,
+                            showConfirmButton: true,
+                            timer: 3000,
+                        }).then(function(result) {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Memilih',
+                            text: response.message,
+                            showConfirmButton: true,
+                        })
+                    }
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Memilih',
+                        text: error.message,
+                        showConfirmButton: false,
+                    })
+                },
+            });
         }
 
         function showLocationPermissionAlert() {
@@ -93,43 +168,13 @@
             });
         }
 
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const lat = position.coords.latitude;
-                    const long = position.coords.longitude;
-                    if (lat && long) {
-                        $.ajax({
-                            url: '{{ route('vote.location') }}',
-                            type: 'POST',
-                            data: {
-                                lat: lat,
-                                long: long,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (!response.data) {
-                                    window.location.href = "/polling";
-                                }
-                            },
-                            error: function(error) {
-                                allert(error)
-                            },
-                        })
-                    } else {
-                        // Tidak bisa mendapatkan koordinat
-                        window.location.href = "/polling";
-                    }
-                },
-                function(error) {
-                    console.error("Error getting geolocation:", error);
-                    // Tangani kesalahan ketika gagal mendapatkan lokasi
-                    window.location.href = "/polling";
-                }
-            );
-        } else {
-            // Geolocation tidak didukung
-            allert("Access Location tidak support di web browser ini")
+        function showLocationNotAllowedAlert() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Melakukan Vote',
+                text: 'Anda tidak dapat melakukan vote karena Anda tidak berada di daerah Surabaya.',
+                showConfirmButton: true,
+            });
         }
     </script>
 @endpush

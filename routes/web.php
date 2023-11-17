@@ -33,6 +33,7 @@ Route::prefix('/')->group(function () {
     Route::get('/candidate/{id}', [CandidateController::class, 'detail'])
         ->name('candidates.detail');
     Route::post('vote/location', [VoteController::class, 'checkLocation'])->name('vote.location');
+    Route::get('vote/ip', [VoteController::class, 'checkIP'])->name('vote.ip');
 });
 Route::resource('/vote', VoteController::class);
 // Route::middleware([IPChecker::class])->group(function () {
