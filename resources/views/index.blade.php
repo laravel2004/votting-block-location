@@ -113,7 +113,7 @@
                                 }
                             },
                             error: function(error) {
-                                console.log(error);
+                                allert(error)
                             },
                         })
                     } else {
@@ -129,7 +129,7 @@
             );
         } else {
             // Geolocation tidak didukung
-            console.log("Geolocation not supported");
+            allert("Access Location tidak support di web browser ini")
         }
     </script>
 @endpush
