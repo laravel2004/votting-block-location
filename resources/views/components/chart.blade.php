@@ -10,6 +10,7 @@
 
 @push('script')
     <script>
+        Chart.register(ChartDataLabels)
         const pieChart = document.getElementById('pie-chart');
         const lineChart = document.getElementById('line-chart');
         const candidates = {!! json_encode($candidates) !!};
@@ -32,6 +33,44 @@
                 hoverOffset: 4
             }]
         };
+    
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display : true,
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                    },
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            let sum = 0;
+                            let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(data => {
+                                sum += data;
+                            });
+                            let percentage = ((value * 100) / sum).toFixed(2) + "%";
+                            return percentage;
+                        },
+                        color: '#fff', // Warna teks
+                        anchor: 'end',
+                        align: 'start',
+                        offset: 10
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutQuart',
+                },
+            },
+        };
+
         const dataLine = {
             labels: namaPaslon,
             datasets: [{
@@ -46,26 +85,7 @@
 
             }]
         };
-        const config = {
-            type: 'pie',
-            data: data,
-            options: {
-                responsive: false,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    title: {
-                        display: true,
-                    }
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuart',
-                },
-            },
-        };
+
         const configline = {
             type: 'bar',
             data: data,
