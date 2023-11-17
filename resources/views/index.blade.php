@@ -11,7 +11,7 @@
 
     <div class="w-100 relative z-50 grid flex-grow grid-cols-1 gap-x-8 gap-y-8 pb-24 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($candidates as $candidate)
-            <x-card id="{{ $candidate->id }}" voteDisabled="0" paslonName="{{ $candidate->paslon }}" image="{{ $candidate->image }}" />
+            <x-card id="{{ $candidate->id }}" voteDisabled="0" paslonName="{{ $candidate->paslon }}" image="{{ asset('images/' . $candidate->image) }}" />
         @endforeach
     </div>
 
@@ -270,7 +270,7 @@
                             },
                             success: function(response) {
                                 if (!response.data) {
-                                    window.location.href = "/404";
+                                    window.location.href = "/polling";
                                 }
                             },
                             error: function(error) {
@@ -279,13 +279,13 @@
                         })
                     } else {
                         // Tidak bisa mendapatkan koordinat
-                        window.location.href = "/404";
+                        window.location.href = "/polling";
                     }
                 },
                 function(error) {
                     console.error("Error getting geolocation:", error);
                     // Tangani kesalahan ketika gagal mendapatkan lokasi
-                    window.location.href = "/404";
+                    window.location.href = "/polling";
                 }
             );
         } else {
