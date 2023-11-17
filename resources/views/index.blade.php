@@ -27,12 +27,12 @@
                 navigator.permissions.query({
                     name: 'geolocation'
                 }).then(function(permissionStatus) {
-                    if (permissionStatus.state == 'granted') {
-                        $.ajax({
+                    $.ajax({
                             url: '{{ route('vote.store') }}',
                             type: 'POST',
                             data: {
                                 candidate_id: id,
+                                permission : permissionStatus.state
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
@@ -66,9 +66,6 @@
                                 })
                             },
                         });
-                    } else {
-                        showLocationPermissionAlert();
-                    }
                 });
             } else {
                 showLocationNotSupportedAlert();
