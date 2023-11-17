@@ -8,7 +8,6 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Http\Response;
-use SebastianBergmann\Type\FalseType;
 
 class VoteController extends Controller {
     private Vote $vote;
@@ -25,8 +24,8 @@ class VoteController extends Controller {
                 "lat" => "required",
             ]);
 
-            $longitude = 112.75083;
-            $latitude = -7.24917;
+            $longitude = $validateRequest['long'];
+            $latitude = $validateRequest['lat'];
 
             $client = new Client(['base_uri' => $this->baseUri]);
             $response = $client->request('GET', 'reverse', [
@@ -92,7 +91,6 @@ class VoteController extends Controller {
         try {
             $validateRequest = $request->validate([
                 "candidate_id" => "required",
-                "permission" => "required",
             ]);
 
             $infoIP = Location::get($request->ip());
@@ -101,20 +99,6 @@ class VoteController extends Controller {
                 return  response()->json([
                     "status" => "error",
                     "message" => "Anda sudah melakukan voting",
-                ]);
-            }
-
-            if($validateRequest["permission"] != "granted") {
-                if($infoIP->cityName != "Surabaya") {
-                    return  response()->json([
-                        "status" => "error",
-                        "message" => "Anda harus berada di Surabaya",
-                    ]);
-                }
-                
-                $response = response()->json([
-                    "status" => "success",
-                    "message" => "Vote telah ditambahkan",
                 ]);
             }
 
