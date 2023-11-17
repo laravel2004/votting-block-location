@@ -153,8 +153,8 @@
         function showLocationPermissionAlert() {
             Swal.fire({
                 icon: 'warning',
-                title: 'Izin Lokasi Diperlukan',
-                text: 'Untuk melakukan vote, izinkan lokasi pada perangkat Anda.',
+                title: 'Anda Memblokir Izin Lokasi',
+                text: 'Kami akan melakukan pengecekan dengan IP Anda.',
                 showConfirmButton: true,
             });
         }
