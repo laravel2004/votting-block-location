@@ -253,44 +253,5 @@
                 showConfirmButton: true,
             });
         }
-
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const lat = position.coords.latitude;
-                    const long = position.coords.longitude;
-                    if (lat && long) {
-                        $.ajax({
-                            url: '{{ route('vote.location') }}',
-                            type: 'POST',
-                            data: {
-                                lat: lat,
-                                long: long,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (!response.data) {
-                                    window.location.href = "/polling";
-                                }
-                            },
-                            error: function(error) {
-                                console.log(error);
-                            },
-                        })
-                    } else {
-                        // Tidak bisa mendapatkan koordinat
-                        window.location.href = "/polling";
-                    }
-                },
-                function(error) {
-                    console.error("Error getting geolocation:", error);
-                    // Tangani kesalahan ketika gagal mendapatkan lokasi
-                    window.location.href = "/polling";
-                }
-            );
-        } else {
-            // Geolocation tidak didukung
-            console.log("Geolocation not supported");
-        }
     </script>
 @endpush
