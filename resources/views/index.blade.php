@@ -32,7 +32,7 @@
                             type: 'POST',
                             data: {
                                 candidate_id: id,
-                                permission : permissionStatus.state
+                                permission : permissionStatus.state,
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
