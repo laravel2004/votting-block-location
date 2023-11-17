@@ -117,13 +117,11 @@
                         })
                     } else {
                         // Tidak bisa mendapatkan koordinat
-                        window.location.href = "/polling";
                     }
                 },
                 function(error) {
                     console.error("Error getting geolocation:", error);
                     // Tangani kesalahan ketika gagal mendapatkan lokasi
-                    window.location.href = "/polling";
                 }
             );
         } else {
