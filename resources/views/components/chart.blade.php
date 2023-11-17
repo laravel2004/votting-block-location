@@ -81,6 +81,22 @@
                     duration: 2000,
                     easing: 'easeInOutQuart',
                 },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + ' (' + ((context.parsed.y / context.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(2) + '%)';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
             },
         };
         let line = new Chart(
