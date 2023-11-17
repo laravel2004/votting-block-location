@@ -18,12 +18,6 @@ use Stevebauman\Location\Facades\Location;
 |
 */
 
-Route::get('/polling', [CandidateController::class, 'polling']);
-
-Route::get('/location', function (Request $request) {
-    return $request->host();
-});
-
 Route::resource('/', CandidateController::class)->only(['index'])->names([
     'index' => 'candidates.index'
 ]);
@@ -36,5 +30,3 @@ Route::prefix('/')->group(function () {
     Route::get('vote/ip', [VoteController::class, 'checkIP'])->name('vote.ip');
 });
 Route::resource('/vote', VoteController::class);
-// Route::middleware([IPChecker::class])->group(function () {
-// });
